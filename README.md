@@ -24,7 +24,7 @@ SafuServer is a lightweight, secure HTTP server designed for rapid development a
 
 ### Prerequisites
 
-- Node.js (if it’s JS-based; adjust accordingly)
+- Node.js
 - Git
 
 ### Quick Start
