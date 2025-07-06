@@ -54,11 +54,9 @@ SafuServer is a lightweight, secure HTTP server designed for rapid development a
 ## 🔧 Configuration
 
 Configure .env variables by renaming .env.example to .env and inputing your
-    ```bash
     ALCHEMY_KEY=
     GATEWAY_URL=
     JWT=
-    ```
 
 ## 📡 API / Endpoints
 
