@@ -62,4 +62,4 @@ Configure .env variables by renaming .env.example to .env and inputing your
 
 | Path                      | Method | Description                        |
 | ------------------------- | ------ | ---------------------------------- |
-| `/api/address/${address}` | GET    | Returns the wallet's erc20 details |
+| `/api/address/${address}` | GET    | Returns the wallet's safu erc20 details |
