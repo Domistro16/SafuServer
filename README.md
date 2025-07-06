@@ -15,10 +15,8 @@ SafuServer is a lightweight, secure HTTP server designed for rapid development a
 
 ## ⭐ Key Features
 
-- Secure, minimal HTTP server with essential default security measures.
-- Simple to configure via config files or environment variables.
-- Lightweight footprint with no external dependencies.
-- Supports extensibility: middleware/plugins, logging, routes.
+- Retrieves and calculates a wallet address' memecoin score/details.
+- Simple to configure via environment variables.
 
 ---
 
