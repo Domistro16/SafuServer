@@ -72,7 +72,8 @@ router.post("/nft/upload", upload.single("file"), (req, res) => __awaiter(void 0
             type: req.file.mimetype,
         });
         const upload = yield pinata.upload.public.file(file);
-        url = process.env.GATEWAY_URL + upload.cid;
+        console.log(upload);
+        url = `https://ipfs.io/ipfs/` + upload.cid;
         res.status(200).json({ message: "Files uploaded successfully", url: url });
     }
     catch (error) {
@@ -89,8 +90,10 @@ router.post("/nft/uploadMetadata", (req, res) => __awaiter(void 0, void 0, void 
             res.status(400).json({ error: "No metadata provided" });
             return;
         }
+        console.log("Metadata received:", metadata);
         const upload = yield pinata.upload.public.json(metadata);
-        const url = process.env.GATEWAY_URL + upload.cid;
+        console.log(upload);
+        const url = `https://ipfs.io/ipfs/` + upload.cid;
         res
             .status(200)
             .json({ message: "Metadata uploaded successfully", url: url });
