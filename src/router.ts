@@ -11,6 +11,7 @@ import { File, Blob } from "node:buffer";
 import "dotenv/config";
 import bodyParser from "body-parser";
 import "dotenv/config";
+import { Readable } from "stream";
 
 const pinata = new PinataSDK({
   pinataJwt: `${process.env.JWT}`,
@@ -57,16 +58,14 @@ router.post("/nft/upload", upload.single("file"), async (req, res) => {
       res.status(400).json({ error: "No file uploaded" });
       return;
     }
+    const stream = Readable.from(req.file.buffer);
 
-    const blob = new Blob([req.file.buffer], {
-      type: req.file.mimetype,
+    const upload = await pinata.upload.public.file(stream as any, {
+      metadata: {
+        name: req.file.originalname,
+      },
     });
-    const file = new File([blob], req.file.originalname, {
-      type: req.file.mimetype,
-    });
-    console.log("File created:", file);
-    const upload = await pinata.upload.public.file(file as unknown as globalThis.File);
-    console.log(upload)
+    console.log(upload);
     url = `https://ipfs.io/ipfs/` + upload.cid;
     res.status(200).json({ message: "Files uploaded successfully", url: url });
   } catch (error) {
@@ -88,8 +87,10 @@ router.post("/nft/uploadMetadata", async (req, res) => {
     const blob = new Blob([JSON.stringify(metadata)], {
       type: "application/json",
     });
-    const upload = await pinata.upload.public.file(blob as unknown as globalThis.File);
-    console.log(upload)
+    const upload = await pinata.upload.public.file(
+      blob as unknown as globalThis.File
+    );
+    console.log(upload);
     const url = `https://ipfs.io/ipfs/` + upload.cid;
     res
       .status(200)
