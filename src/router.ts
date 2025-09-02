@@ -58,9 +58,12 @@ router.post("/nft/upload", upload.single("file"), async (req, res) => {
       res.status(400).json({ error: "No file uploaded" });
       return;
     }
-    const stream = Readable.from(req.file.buffer);
+    const blob = new Blob([req.file.buffer]);
+    const file = new File([blob], req.file.originalname, {
+      type: req.file.mimetype,
+    });
 
-    const upload = await pinata.upload.public.file(stream as any, {
+    const upload = await pinata.upload.public.file(file as any, {
       metadata: {
         name: req.file.originalname,
       },
