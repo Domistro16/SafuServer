@@ -6,6 +6,7 @@ import { getUserCategory } from "./packages/status";
 import { getCount } from "./packages/count";
 import { PinataSDK } from "pinata";
 import multer from "multer";
+import { File, Blob } from "node:buffer";
 // Removed the import of Blob from "buffer" as it conflicts with the global Blob type
 import "dotenv/config";
 import bodyParser from "body-parser";
@@ -57,13 +58,14 @@ router.post("/nft/upload", upload.single("file"), async (req, res) => {
       return;
     }
 
-    const blob = new globalThis.Blob([req.file.buffer], {
+    const blob = new Blob([req.file.buffer], {
       type: req.file.mimetype,
     });
     const file = new File([blob], req.file.originalname, {
       type: req.file.mimetype,
     });
-    const upload = await pinata.upload.public.file(file);
+    console.log("File created:", file);
+    const upload = await pinata.upload.public.file(file as unknown as globalThis.File);
     console.log(upload)
     url = `https://ipfs.io/ipfs/` + upload.cid;
     res.status(200).json({ message: "Files uploaded successfully", url: url });
