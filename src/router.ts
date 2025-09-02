@@ -85,7 +85,10 @@ router.post("/nft/uploadMetadata", async (req, res) => {
       return;
     }
     console.log("Metadata received:", metadata);
-    const upload = await pinata.upload.public.json(metadata);
+    const blob = new Blob([JSON.stringify(metadata)], {
+      type: "application/json",
+    });
+    const upload = await pinata.upload.public.file(blob as unknown as globalThis.File);
     console.log(upload)
     const url = `https://ipfs.io/ipfs/` + upload.cid;
     res
