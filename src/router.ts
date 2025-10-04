@@ -46,6 +46,9 @@ router.get("/address/:address", async (req, res) => {
       isBuilder(address)
     ]);
 
+    console.log("m", m)
+    console.log("b", b);
+
     res.status(200).json({
       status: r.status,
       first: f,

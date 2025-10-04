@@ -14,7 +14,7 @@ export async function getMemecoiner(address: string) {
           fromAddress: address,
           category: ["external", "erc20", "erc721", "erc1155"],
           excludeZeroValue: false,
-          toAddress: "0x5c952063c7fc8610FFDB798152D69F0B9550762b",
+          toAddress: "0x5c952063c7fc8610FFDB798152D69F0B9550762b"
         },
       ],
     };
