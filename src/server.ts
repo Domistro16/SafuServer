@@ -8,7 +8,12 @@ app.use(cors());
 
 app.use(express.json());
 const port = process.env.PORT || 800;
-
+console.log(
+  "routes type",
+  typeof routes,
+  Array.isArray(routes),
+  routes && routes.stack ? "is Router" : "not Router"
+);
 app.use("/api", routes);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
