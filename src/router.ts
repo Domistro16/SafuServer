@@ -12,6 +12,9 @@ import "dotenv/config";
 import bodyParser from "body-parser";
 import "dotenv/config";
 import { Readable } from "stream";
+import { getDefiDegen } from "./packages/defi";
+import { getMemecoiner } from "./packages/memecoin";
+import { isBuilder } from "./packages/builder";
 
 const pinata = new PinataSDK({
   pinataJwt: `${process.env.JWT}`,
@@ -27,18 +30,32 @@ router.get("/address/:address", async (req, res) => {
   try {
     const { address } = req.params;
     console.log(`Searching for wallet with user ID: ${address}`); // Debugging log
-
-    const [r, f, l, u, c] = await Promise.all([
+    if (!address) {
+      res.status(500).json({
+        error: "No Address",
+      });
+    }
+    const [r, f, l, u, c, d, m, b] = await Promise.all([
       calculateTotalBNBValue(address),
       getFirstMemecoin(address),
       getLastMemecoin(address),
       getUserCategory(address),
       getCount(address),
+      getDefiDegen(address),
+      getMemecoiner(address),
+      isBuilder(address)
     ]);
 
-    res
-      .status(200)
-      .json({ status: r.status, first: f, last: l, user: u, count: c });
+    res.status(200).json({
+      status: r.status,
+      first: f,
+      last: l,
+      user: u,
+      count: c,
+      defi: d,
+      memecoiner: m,
+      builder: b
+    });
   } catch (err) {
     if (err instanceof Error) {
       console.error(`Error fetching wallet: ${err.message}`);

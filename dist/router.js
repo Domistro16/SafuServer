@@ -20,10 +20,14 @@ const status_1 = require("./packages/status");
 const count_1 = require("./packages/count");
 const pinata_1 = require("pinata");
 const multer_1 = __importDefault(require("multer"));
+const node_buffer_1 = require("node:buffer");
 // Removed the import of Blob from "buffer" as it conflicts with the global Blob type
 require("dotenv/config");
 const body_parser_1 = __importDefault(require("body-parser"));
 require("dotenv/config");
+const defi_1 = require("./packages/defi");
+const memecoin_1 = require("./packages/memecoin");
+const builder_1 = require("./packages/builder");
 const pinata = new pinata_1.PinataSDK({
     pinataJwt: `${process.env.JWT}`,
     pinataGateway: `${process.env.GATEWAY_URL}`,
@@ -35,16 +39,31 @@ router.get("/address/:address", (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const { address } = req.params;
         console.log(`Searching for wallet with user ID: ${address}`); // Debugging log
-        const [r, f, l, u, c] = yield Promise.all([
+        if (!address) {
+            res.status(500).json({
+                error: "No Address",
+            });
+        }
+        const [r, f, l, u, c, d, m, b] = yield Promise.all([
             (0, balance_1.calculateTotalBNBValue)(address),
             (0, firstMemecoin_1.getFirstMemecoin)(address),
             (0, firstMemecoin_2.getLastMemecoin)(address),
             (0, status_1.getUserCategory)(address),
             (0, count_1.getCount)(address),
+            (0, defi_1.getDefiDegen)(address),
+            (0, memecoin_1.getMemecoiner)(address),
+            (0, builder_1.isBuilder)(address)
         ]);
-        res
-            .status(200)
-            .json({ status: r.status, first: f, last: l, user: u, count: c });
+        res.status(200).json({
+            status: r.status,
+            first: f,
+            last: l,
+            user: u,
+            count: c,
+            defi: d,
+            memecoiner: m,
+            builder: b
+        });
     }
     catch (err) {
         if (err instanceof Error) {
@@ -65,13 +84,15 @@ router.post("/nft/upload", upload.single("file"), (req, res) => __awaiter(void 0
             res.status(400).json({ error: "No file uploaded" });
             return;
         }
-        const blob = new globalThis.Blob([req.file.buffer], {
+        const blob = new node_buffer_1.Blob([req.file.buffer]);
+        const file = new node_buffer_1.File([blob], req.file.originalname, {
             type: req.file.mimetype,
         });
-        const file = new File([blob], req.file.originalname, {
-            type: req.file.mimetype,
+        const upload = yield pinata.upload.public.file(file, {
+            metadata: {
+                name: req.file.originalname,
+            },
         });
-        const upload = yield pinata.upload.public.file(file);
         console.log(upload);
         url = `https://ipfs.io/ipfs/` + upload.cid;
         res.status(200).json({ message: "Files uploaded successfully", url: url });
@@ -91,7 +112,10 @@ router.post("/nft/uploadMetadata", (req, res) => __awaiter(void 0, void 0, void 
             return;
         }
         console.log("Metadata received:", metadata);
-        const upload = yield pinata.upload.public.json(metadata);
+        const blob = new node_buffer_1.Blob([JSON.stringify(metadata)], {
+            type: "application/json",
+        });
+        const upload = yield pinata.upload.public.file(blob);
         console.log(upload);
         const url = `https://ipfs.io/ipfs/` + upload.cid;
         res
