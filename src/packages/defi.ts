@@ -1,16 +1,21 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
-
 const PANCAKE_V3_SUBGRAPH =
   "https://gateway.thegraph.com/api/subgraphs/id/Hv1GncLY5docZoGtXjo4kwbTvxm3MAhVZqBZE4sUT9eZ";
 
 const PANCAKE_V2_SUBGRAPH =
   "https://gateway.thegraph.com/api/subgraphs/id/C5EuiZwWkCge7edveeMcvDmdr7jjc1zG4vgn8uucLdfz";
 
+// Define minimal types for the GraphQL response we're expecting
+interface Swap {
+  id: string;
+  timestamp?: string;
+  transaction?: { id: string };
+  sender?: string;
+}
 
 async function graphqlFetch<T>(
   endpoint: string,
   query: string,
-  variables: any
+  variables?: any
 ): Promise<T> {
   const resp = await fetch(endpoint, {
     method: "POST",
@@ -25,15 +30,15 @@ async function graphqlFetch<T>(
     console.error("GraphQL errors:", j.errors);
     throw new Error("GraphQL query failed");
   }
-  return j.data;
+  return j.data as T;
 }
 
-export async function getDefiDegen(address: string) {
-   const q1 = `
+export async function getDefiDegen(address: string): Promise<boolean> {
+  const q1 = `
     query HasTxn($wallet: String!) {
         swaps (
     where: { sender: $wallet } 
-    first: 1
+    first: 10
   ) {
     id
     timestamp
@@ -63,26 +68,24 @@ export async function getDefiDegen(address: string) {
     `;
 
   let isDefi = false;
-  const data1 = await graphqlFetch<{ swaps: { id: string }[] }>(
-    PANCAKE_V3_SUBGRAPH,
-    q1,
-    { wallet: address }
-  );
 
-  if (data1.swaps.length > 0) {
+  const data1 = await graphqlFetch<{ swaps: Swap[] }>(PANCAKE_V3_SUBGRAPH, q1, {
+    wallet: address,
+  });
+
+  if (data1?.swaps && data1.swaps.length > 0) {
     isDefi = true;
   }
 
   if (!isDefi) {
-    const data2 = await graphqlFetch<{ swaps: { id: string }[] }>(
+    const data2 = await graphqlFetch<{ swaps: Swap[] }>(
       PANCAKE_V2_SUBGRAPH,
       q2,
       { wallet: address }
     );
-    if (data2.swaps.length > 0) {
+    if (data2?.swaps && data2.swaps.length > 0) {
       isDefi = true;
     }
   }
   return isDefi;
 }
-
