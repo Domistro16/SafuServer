@@ -26,8 +26,10 @@ export async function getMemecoiner(address: string) {
       },
       body: JSON.stringify(data),
     });
-
     const result = await response.json();
+
+    console.log(result);
+
     if (result.result.transfers > 0) {
       return true;
     } else {
