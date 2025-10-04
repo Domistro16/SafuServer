@@ -1,4 +1,5 @@
 // Replace with your Alchemy API Key
+import "dotenv/config";
 const apiKey = process.env.ALCHEMY_API_KEY || "demo";
 const baseURL = `https://bnb-mainnet.g.alchemy.com/v2/${apiKey}`;
 

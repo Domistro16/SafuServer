@@ -15,7 +15,7 @@
   "description": "",
   "dependencies": {
     "@apollo/client": "^4.0.7",
-    "alchemy-sdk": "^3.5.6",
+    "alchemy-sdk": "^3.6.5",
     "axios": "^1.10.0",
     "bcrypt": "^5.1.1",
     "bip39": "^3.1.0",

@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 const PANCAKE_V3_SUBGRAPH =
   "https://gateway.thegraph.com/api/subgraphs/id/Hv1GncLY5docZoGtXjo4kwbTvxm3MAhVZqBZE4sUT9eZ";
 

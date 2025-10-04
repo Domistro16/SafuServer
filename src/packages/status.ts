@@ -24,11 +24,13 @@ export async function getUserCategory(walletAddress: string) {
         AssetTransfersCategory.ERC20,
         AssetTransfersCategory.ERC721,
         AssetTransfersCategory.EXTERNAL,
+        AssetTransfersCategory.ERC1155,
       ],
       order: SortingOrder.ASCENDING, // Fetch from the first transaction
       maxCount: 1, // Get only the first transaction,
       withMetadata: true,
     });
+    
 
     console.log(transfers);
 
@@ -41,13 +43,13 @@ export async function getUserCategory(walletAddress: string) {
     ).getTime();
 
     if (firstTxTime >= oneMonthAgo) {
-      return "New User";
+      return "Newbie";
     } else if (firstTxTime >= sixMonthsAgo) {
       return "Regular";
     } else if (firstTxTime >= twoYearsAgo) {
       return "OG";
     } else {
-      return "Veteran";
+      return "OG";
     }
   } catch (error) {
     console.error("Error fetching transactions:", error);

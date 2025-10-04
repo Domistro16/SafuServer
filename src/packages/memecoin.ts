@@ -1,7 +1,5 @@
-import e from "express";
-
-// Replace with your Alchemy API Key
-const apiKey = "docs-demo";
+import "dotenv/config";
+// Replace with your Alchemy API Ke
 const baseURL = `https://bnb-mainnet.g.alchemy.com/v2/${process.env.API_KEY}`;
 
 export async function getMemecoiner(address: string) {
@@ -15,6 +13,7 @@ export async function getMemecoiner(address: string) {
           fromBlock: "0x0",
           fromAddress: address,
           category: ["external", "erc20", "erc721", "erc1155"],
+          excludeZeroValue: false,
           toAddress: "0x5c952063c7fc8610FFDB798152D69F0B9550762b",
         },
       ],
