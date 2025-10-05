@@ -1,6 +1,6 @@
 import "dotenv/config";
 // Replace with your Alchemy API Ke
-const baseURL = `https://bnb-mainnet.g.alchemy.com/v2/${process.env.API_KEY}`;
+const baseURL = `https://bnb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`;
 
 export async function getMemecoiner(address: string) {
   try {

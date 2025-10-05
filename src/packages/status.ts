@@ -5,7 +5,7 @@ import {
   Network,
   SortingOrder,
 } from "alchemy-sdk";
-
+import { ethers } from "ethers";
 const settings = {
   apiKey: process.env.ALCHEMY_KEY, // Replace with your Alchemy API Key.
   network: Network.BNB_MAINNET, // Replace with your network.
@@ -30,7 +30,6 @@ export async function getUserCategory(walletAddress: string) {
       maxCount: 1, // Get only the first transaction,
       withMetadata: true,
     });
-    
 
     console.log(transfers);
 
@@ -38,10 +37,14 @@ export async function getUserCategory(walletAddress: string) {
       return "Unknown";
     }
 
-    const firstTxTime = new Date(
-      transfers.transfers[0].metadata.blockTimestamp
-    ).getTime();
+    const provider = new ethers.JsonRpcProvider(
+      `https://bnb-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`
+    );
 
+    const block = await provider.getBlock(transfers.transfers[0].blockNum);
+    console.log(block);
+    const firstTxTime = new Date(block?.timestamp!).getTime();
+    console.log(firstTxTime);
     if (firstTxTime >= oneMonthAgo) {
       return "Newbie";
     } else if (firstTxTime >= sixMonthsAgo) {
