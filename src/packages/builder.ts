@@ -106,6 +106,7 @@ export async function isBuilder(address: string): Promise<boolean> {
   try {
     // Call the findContractsDeployed function to retrieve the array of deployed contracts
     const contractAddresses = await findContractsDeployed(address);
+    console.log(contractAddresses)
     return contractAddresses.length > 0;
   } catch (error) {
     console.error("Error in isBuilder:", error);
