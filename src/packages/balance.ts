@@ -102,7 +102,7 @@ export async function calculateTotalBNBValue(address: string) {
       supply = await tokenContract.methods.totalSupply().call();
     } catch (error) {
       console.error("Error fetching total supply:", error);
-      supply = 1000000000000;
+      continue
     }
     const percerntage = (balance / Number(supply)) * 100;
 

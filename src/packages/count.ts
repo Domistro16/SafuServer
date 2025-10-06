@@ -22,7 +22,7 @@ export const getCount = async (address: string) => {
     const formatted = await response.json();
 
     const count = parseInt(formatted.result, 16);
-    return count;
+    return count.toLocaleString();
   } catch (error) {
     return 0;
   }

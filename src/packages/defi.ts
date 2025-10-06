@@ -1,10 +1,10 @@
 import "dotenv/config";
 
 const PANCAKE_V3_SUBGRAPH =
-  "https://gateway.thegraph.com/api/subgraphs/id/Hv1GncLY5docZoGtXjo4kwbTvxm3MAhVZqBZE4sUT9eZ";
+  "https://gateway.thegraph.com/api/subgraphs/id/C5EuiZwWkCge7edveeMcvDmdr7jjc1zG4vgn8uucLdfz";
 
 const PANCAKE_V2_SUBGRAPH =
-  "https://gateway.thegraph.com/api/subgraphs/id/C5EuiZwWkCge7edveeMcvDmdr7jjc1zG4vgn8uucLdfz";
+  "https://gateway.thegraph.com/api/subgraphs/id/G5MUbSBM7Nsrm9tH2tGQUiAF4SZDGf2qeo1xPLYjKr7K";
 
 // Define minimal types for the GraphQL response we're expecting
 interface Swap {
@@ -40,7 +40,7 @@ export async function getDefiDegen(address: string): Promise<boolean> {
     query HasTxn($wallet: String!) {
         swaps (
     where: { sender: $wallet } 
-    first: 10
+    first: 1
   ) {
     id
     timestamp
