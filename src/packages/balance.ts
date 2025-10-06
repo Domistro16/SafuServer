@@ -41,7 +41,8 @@ const getWhaleStatus = (balance: number) => {
 export async function calculateTotalBNBValue(address: string) {
   const balance = await provider.getBalance(address);
   console.log(balance);
-  const whaleStatus = getWhaleStatus(Number(parseEther(balance.toString())));
+  let parsed = Number(balance) / 1e18;
+  const whaleStatus = getWhaleStatus(parsed);
 
   return { status: whaleStatus.tag };
 }
