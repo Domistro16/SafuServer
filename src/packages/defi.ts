@@ -3,9 +3,6 @@ import "dotenv/config";
 const PANCAKE_V3_SUBGRAPH =
   "https://gateway.thegraph.com/api/subgraphs/id/C5EuiZwWkCge7edveeMcvDmdr7jjc1zG4vgn8uucLdfz";
 
-const PANCAKE_V2_SUBGRAPH =
-  "https://gateway.thegraph.com/api/subgraphs/id/G5MUbSBM7Nsrm9tH2tGQUiAF4SZDGf2qeo1xPLYjKr7K";
-
 // Define minimal types for the GraphQL response we're expecting
 interface Swap {
   id: string;
@@ -78,7 +75,7 @@ export async function getDefiDegen(address: string): Promise<boolean> {
     isDefi = true;
   }
 
-  if (!isDefi) {
+  /* if (!isDefi) {
     const data2 = await graphqlFetch<{ swaps: Swap[] }>(
       PANCAKE_V2_SUBGRAPH,
       q2,
@@ -87,6 +84,6 @@ export async function getDefiDegen(address: string): Promise<boolean> {
     if (data2?.swaps && data2.swaps.length > 0) {
       isDefi = true;
     }
-  }
+  } */
   return isDefi;
 }
