@@ -1,7 +1,7 @@
 // Replace with your Alchemy API Key
 import "dotenv/config";
 const apiKey = process.env.ALCHEMY_API_KEY || "demo";
-const baseURL = `https://bnb-mainnet.g.alchemy.com/v2/52LgtwkClzL8bemtkgcC7Kja912fnMoC`;
+const baseURL = `https://bnb-mainnet.g.alchemy.com/v2/${apiKey}`;
 
 // Define the asynchronous function that will retrieve deployed contracts
 export async function findContractsDeployed(

@@ -66,6 +66,7 @@ export async function calculateTotalBNBValue(address: string) {
       await alchemy.core.getTokenBalances(address, {
         type: TokenBalanceType.ERC20,
         pageKey: pageKey,
+       
       });
     allBalances = allBalances.concat(response.tokenBalances);
     pageKey = response.pageKey;
