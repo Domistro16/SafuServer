@@ -7,7 +7,7 @@ import {
 import Web3 from "web3";
 import "dotenv/config";
 // Main function to calculate total BNB value
-import { ethers } from "ethers";
+import { ethers, parseEther } from "ethers";
 const settings = {
   apiKey: process.env.ALCHEMY_KEY, // Replace with your Alchemy API Key.
   network: Network.BNB_MAINNET, // Replace with your network.
@@ -41,7 +41,7 @@ const getWhaleStatus = (balance: number) => {
 export async function calculateTotalBNBValue(address: string) {
   const balance = await provider.getBalance(address);
   console.log(balance);
-  const whaleStatus = getWhaleStatus(Number(balance));
+  const whaleStatus = getWhaleStatus(Number(parseEther(balance.toString())));
 
   return { status: whaleStatus.tag };
 }
