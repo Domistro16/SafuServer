@@ -1,4 +1,17 @@
 import "dotenv/config";
+import {
+  Alchemy,
+  AssetTransfersCategory,
+  Network,
+  SortingOrder,
+} from "alchemy-sdk";
+import { ethers } from "ethers";
+const settings = {
+  apiKey: process.env.ALCHEMY_KEY, // Replace with your Alchemy API Key.
+  network: Network.BNB_MAINNET, // Replace with your network.
+};
+const alchemy = new Alchemy(settings);
+
 export async function getPriceInUSD(tokenAddress: string) {
   try {
     const options = {
@@ -13,7 +26,7 @@ export async function getPriceInUSD(tokenAddress: string) {
     };
 
     const res = await fetch(
-      `https://api.g.alchemy.com/prices/v1/${process.env.ALCHEMY_KEY}/tokens/by-address`,
+      `https://bnb-mainnet.g.alchemy.com/prices/v1/${process.env.ALCHEMY_KEY}/tokens/by-address`,
       options
     );
     const jsonResponse = await res.json(); // ✅ Parse response as JSON
