@@ -55,8 +55,7 @@ export async function getDefiDegen(address: string): Promise<boolean> {
   const q2 = `
       query HasTxn($wallet: String!) {
         swaps (
-    where: { sender: $wallet } 
-    first: 1
+    where: {sender: $wallet }
   ) {
     id
     timestamp
