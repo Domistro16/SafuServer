@@ -75,7 +75,7 @@ export async function calculateTotalBNBValue(address: string) {
   let values = [];
   let i = 1;
   const nonZeroBalances = allBalances.filter((token: any) => {
-    return token.tokenBalance !== "0";
+    return Number(token.tokenBalance) !== 0;
   });
 
   let whale = [];
