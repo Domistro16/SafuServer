@@ -43,10 +43,10 @@ router.get("/address/:address", async (req, res) => {
       getCount(address),
       getDefiDegen(address),
       getMemecoiner(address),
-      isBuilder(address)
+      isBuilder(address),
     ]);
 
-    console.log("m", m)
+    console.log("m", m);
     console.log("b", b);
 
     res.status(200).json({
@@ -57,7 +57,7 @@ router.get("/address/:address", async (req, res) => {
       count: c,
       defi: d,
       memecoiner: m,
-      builder: b
+      builder: b,
     });
   } catch (err) {
     if (err instanceof Error) {
@@ -72,8 +72,11 @@ router.get("/address/:address", async (req, res) => {
 
 router.post("/nft/upload", upload.single("file"), async (req, res) => {
   try {
+    if (req.headers.authorization !== `Bearer ${process.env.UPLOAD_KEY}`) {
+      res.status(403).json({ error: "Unauthorized" });
+      return;
+    }
     let url = "";
-    console.log("File received:", req.file);
     if (!req.file) {
       res.status(400).json({ error: "No file uploaded" });
       return;
@@ -101,6 +104,10 @@ router.post("/nft/upload", upload.single("file"), async (req, res) => {
 
 router.post("/nft/uploadMetadata", async (req, res) => {
   try {
+    if (req.headers.authorization !== `Bearer ${process.env.UPLOAD_KEY}`) {
+      res.status(403).json({ error: "Unauthorized" });
+      return;
+    }
     const metadata = req.body;
     if (!metadata) {
       res.status(400).json({ error: "No metadata provided" });
